@@ -24,13 +24,21 @@ class UserPermission
     const READ  = 0b01; // flag allowing to view this calendar
     const WRITE = 0b10; // flag allowing to edit this calendar
 
-    /** @var User */
+    /**
+     * @var User 
+     */
     private $user;
 
-    /** @var AbstractCalendar */
+    /**
+     * @var AbstractCalendar
+     */
     private $calendar;
 
-    /** @var Integer Mask of permissions allocated for the User on the Calendar */
+    /**
+     * Mask of permissions allocated for the User on the Calendar
+     *
+     * @var int  
+     */
     private $mask = 0b0000;
 
     public function __construct(AbstractCalendar $calendar, User $user, $mask = 0b0000)
@@ -40,19 +48,32 @@ class UserPermission
         $this->calendar = $calendar;
     }
 
-    /** @return integer current mask associated to this user */
+    /**
+     * @brief getter
+     * @details Get current mask associated to this user
+     *
+     * @return int 
+     */
     public function getMask()
     {
         return $this->mask;
     }
 
-    /** @return User */
+    /**
+     * @brief getter
+     *
+     * @return User
+     */
     public function getUser()
     {
         return $this->user;
     }
 
-    /** @return AbstractCalendar */
+    /**
+     * @brief getter
+     *
+     * @return AbstractCalendar
+     */
     public function getCalendar()
     {
         return $this->calendar;
@@ -62,7 +83,6 @@ class UserPermission
      * Grant a permission on this calendar
      *
      * @param integer $flag Flag to activate
-     *
      * @return $this
      */
     public function grant($flag)
@@ -80,7 +100,6 @@ class UserPermission
      * Revoke a permission on this calendar
      *
      * @param integer $flag Flag to deactivate
-     *
      * @return $this
      */
     public function revoke($flag)

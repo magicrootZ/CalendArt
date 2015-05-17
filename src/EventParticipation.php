@@ -32,24 +32,44 @@ class EventParticipation
     const ROLE_PARTICIPANT = 0b01;
     const ROLE_MANAGER     = 0b10;
 
-    /** @var AbstractEvent */
+    /**
+     * @var AbstractEvent
+     */
     protected $event;
 
-    /** @var User */
+    /** 
+     * @var User
+     */
     protected $user;
 
-    /** @var integer */
+    /**
+     * @var int
+     */
     protected $role = self::ROLE_PARTICIPANT;
 
-    /** @var Datetime */
+    /**
+     * @var Datetime
+     */
     protected $invitedAt;
 
-    /** @var Datetime */
+    /**
+     * @var Datetime
+     */
     protected $answeredAt = null;
 
-    /** @var integer */
+    /**
+     * @var int
+     */
     protected $status = self::STATUS_TENTATIVE;
 
+    /**
+     * @brief constructor
+     *
+     * @param AbstractEvent $event
+     * @param User $user
+     * @param $role int
+     * @param $status int
+     */
     public function __construct(AbstractEvent $event, User $user, $role = self::ROLE_PARTICIPANT, $status = self::STATUS_TENTATIVE)
     {
         $this->user  = $user;
@@ -63,48 +83,72 @@ class EventParticipation
         $user->addEvent($event);
     }
 
-    /** @return Datetime|null null if the user has not answered yet to the invitation */
+    /**
+     * @brief getter
+     * @details return null if the user has not answered yet to the invitation
+     *
+     * @return Datetime|null 
+     */
     public function getAnsweredAt()
     {
         return $this->answeredAt;
     }
 
-    /** @return boolean returns true if the user has answered this invitation */
+    /**
+     * @details returns true if the user has answered this invitation
+     *
+     * @return boolean
+     */
     public function hasAnswered()
     {
         return null !== $this->answeredAt;
     }
 
-    /** @return $this */
+    /** 
+     * @return $this
+     */
     public function setAnsweredAt(Datetime $date = null)
     {
-        $this->answeredAt = $date ?: new Datetime;
+        $this->answeredAt = $date ?: new Datetime();
 
         return $this;
     }
 
-    /** @return Datetime */
+    /**
+     * @brief getter
+     *
+     * @return Datetime
+     */
     public function getInvitedAt()
     {
         return $this->invitedAt;
     }
 
-    /** @return AbstractEvent */
+    /**
+     * @brief getter
+     *
+     * @return AbstractEvent
+     */
     public function getEvent()
     {
         return $this->event;
     }
 
-    /** @return User */
+    /**
+     * @brief getter
+     *
+     * @return User
+     */
     public function getUser()
     {
         return $this->user;
     }
 
     /**
-     * Get the current role of the user in this event
+     * @brief Get the current role of the user in this event
+     * @details return mask that puts the rights of the user
      *
-     * @return integer mask that puts the rights of the user
+     * @return int 
      */
     public function getRole()
     {
@@ -112,8 +156,9 @@ class EventParticipation
     }
 
     /**
-     * @param integer $role
+     * @brief setter
      *
+     * @param int $role
      * @return $this
      */
     public function setRole($role)
@@ -124,9 +169,10 @@ class EventParticipation
     }
 
     /**
-     * Get the current status of this participation
+     * @brief getter
+     * @details Get the current status of this participation
      *
-     * @return integer
+     * @return int
      */
     public function getStatus()
     {
@@ -134,14 +180,21 @@ class EventParticipation
     }
 
     /**
-     * @param integer $status
+     * @brief setter
      *
+     * @param int $status
      * @return $this
      */
     public function setStatus($status)
     {
         if (!in_array($status, static::getAvailableStatuses())) {
-            throw new InvalidArgumentException(sprintf('Status not recognized ; Had "%s", expected one of "%s"', $status, implode('", "', static::getAvailableStatuses())));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Status not recognized ; Had "%s", expected one of "%s"',
+                    $status,
+                    implode('", "', static::getAvailableStatuses())
+                )
+            );
         }
 
         $this->status = $status;
@@ -150,13 +203,17 @@ class EventParticipation
     }
 
     /**
-     * Fetch the available statuses
+     * @brief Fetch the available statuses
      *
-     * @return integer[]
+     * @return int[]
      */
     public static function getAvailableStatuses()
     {
-        return [self::STATUS_DECLINED, self::STATUS_TENTATIVE, self::STATUS_ACCEPTED];
+        return [
+            self::STATUS_DECLINED,
+            self::STATUS_TENTATIVE,
+            self::STATUS_ACCEPTED
+        ];
     }
 }
 

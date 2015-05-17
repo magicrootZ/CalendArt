@@ -24,58 +24,96 @@ use Doctrine\Common\Collections\Collection,
  */
 class User
 {
-    /** @var string User's name */
+    /** 
+     * User's name
+     *
+     * @var string
+     */
     protected $name;
 
-    /** @var string User's email */
+    /**
+     * User's email 
+     * 
+     * @var string
+     */
     protected $email;
 
-    /** @var Collection<AbstractEvent> Collection of events the user is involved in */
+    /**
+     * Collection of events the user is involved in
+     *
+     * @var Collection<AbstractEvent> 
+     */
     protected $events;
 
+    /**
+     * @brief constructor
+     *
+     * @param string $name
+     * @param string $email
+     */
     public function __construct($name, $email)
     {
         $this->name  = $name;
         $this->email = $email;
 
-        $this->events = new ArrayCollection;
+        $this->events = new ArrayCollection();
     }
 
-    /** @return string */
+    /**
+     * @brief getter
+     *
+     * @return string 
+     */
     public function getName()
     {
         return $this->name;
     }
 
-    /** @return string */
+    /**
+     * @brief getter
+     * 
+     * @return string
+     */
     public function getEmail()
     {
         return $this->email;
     }
 
-    /** @return Collection<AbstractEvent> */
+    /**
+     * @brief getter
+     *
+     * @return Collection<AbstractEvent>
+     */
     public function getEvents()
     {
         return $this->events;
     }
 
-    /** @return $this */
+    /**
+     * @brief setter
+     *
+     * @param AbstractEvent $event
+     * @return $this
+     */
     public function addEvent(AbstractEvent $event)
     {
-        if ($this->events->contains($event)) {
-            return $this;
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
         }
-
-        $this->events->add($event);
-
         return $this;
     }
 
-    /** @return $this */
+    /**
+     * @brief remover
+     * 
+     * @param AbstractEvent $event
+     * @return $this
+     */
     public function removeEvent(AbstractEvent $event)
     {
-        $this->events->removeElement($event);
-
+        if ($this->events->contains($event)) {
+            $this->events->removeElement($event);
+        }
         return $this;
     }
 }
